@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Took this list from Cedarville's repo, shout out them!
 SERVICE_FILE="systemctl-safe-services.txt"
 
 if [[ ! -f "$SERVICE_FILE" ]]; then
