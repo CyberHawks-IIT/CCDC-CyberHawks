@@ -13,7 +13,7 @@ while True:
    second = now.second
    millisecond = now.microsecond // 1000  # Convert microseconds to milliseconds
    # Print in formatted style
-   output = subprocess.check_output("sudo ss -plunta", shell=True).decode().split("\n")
+   output = subprocess.check_output("sudo ss -plunteia", shell=True).decode().split("\n")
    if header == "":
       print(output[0])
       header = output[0]
