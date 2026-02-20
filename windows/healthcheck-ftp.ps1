@@ -37,7 +37,7 @@ foreach ($svc in $serviceNames) {
 # FTP site status
 try {
     Import-Module WebAdministration -ErrorAction Stop
-    $ftpSites = Get-Website | Where-Object { $_.Bindings.Collection.bindingInformation -match ":$Port:" -and $_.Bindings.Collection.protocol -contains "ftp" }
+    $ftpSites = Get-Website | Where-Object { $_.Bindings.Collection.bindingInformation -match ":${Port}:" -and $_.Bindings.Collection.protocol -contains "ftp" }
     if ($ftpSites.Count -eq 0) {
         $results += New-Result "FTP Site" "Port $Port" "WARN" "No FTP site bound to port $Port"
     } else {

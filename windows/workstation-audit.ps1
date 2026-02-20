@@ -25,17 +25,17 @@ function New-Result {
 }
 
 function Test-Tcp {
-    param([string]$Host, [int]$Port)
+    param([string]$TargetHost, [int]$Port)
     try {
-        $r = Test-NetConnection -ComputerName $Host -Port $Port -WarningAction SilentlyContinue
+        $r = Test-NetConnection -ComputerName $TargetHost -Port $Port -WarningAction SilentlyContinue
         return $r.TcpTestSucceeded
     } catch { return $false }
 }
 
 function Test-Udp {
-    param([string]$Host, [int]$Port)
+    param([string]$TargetHost, [int]$Port)
     try {
-        $r = Test-NetConnection -ComputerName $Host -Port $Port -Udp -WarningAction SilentlyContinue
+        $r = Test-NetConnection -ComputerName $TargetHost -Port $Port -Udp -WarningAction SilentlyContinue
         return $r.UdpTestSucceeded
     } catch { return $false }
 }
@@ -45,12 +45,12 @@ $results = @()
 # AD/DNS/DHCP checks
 $adPorts = @(53, 88, 389, 445)
 foreach ($p in $adPorts) {
-    $ok = Test-Tcp -Host $AdServer -Port $p
-    $results += New-Result "AD Port" "$AdServer:$p" ($(if ($ok) { "OK" } else { "FAIL" })) "TCP"
+    $ok = Test-Tcp -TargetHost $AdServer -Port $p
+    $results += New-Result "AD Port" "${AdServer}:$p" ($(if ($ok) { "OK" } else { "FAIL" })) "TCP"
 }
 
-$dhcpOk = Test-Udp -Host $AdServer -Port 67
-$results += New-Result "DHCP Port" "$AdServer:67" ($(if ($dhcpOk) { "OK" } else { "WARN" })) "UDP"
+$dhcpOk = Test-Udp -TargetHost $AdServer -Port 67
+$results += New-Result "DHCP Port" "${AdServer}:67" ($(if ($dhcpOk) { "OK" } else { "WARN" })) "UDP"
 
 try {
     $domain = $env:USERDNSDOMAIN
@@ -85,8 +85,8 @@ try {
 }
 
 # Web server checks
-$webOk = Test-Tcp -Host $WebServer -Port 80
-$results += New-Result "Web Port" "$WebServer:80" ($(if ($webOk) { "OK" } else { "FAIL" })) "TCP"
+$webOk = Test-Tcp -TargetHost $WebServer -Port 80
+$results += New-Result "Web Port" "${WebServer}:80" ($(if ($webOk) { "OK" } else { "FAIL" })) "TCP"
 
 try {
     $resp = Invoke-WebRequest -Uri ("http://{0}/" -f $WebServer) -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
@@ -97,8 +97,8 @@ try {
 }
 
 # FTP server checks
-$ftpOk = Test-Tcp -Host $FtpServer -Port 21
-$results += New-Result "FTP Port" "$FtpServer:21" ($(if ($ftpOk) { "OK" } else { "FAIL" })) "TCP"
+$ftpOk = Test-Tcp -TargetHost $FtpServer -Port 21
+$results += New-Result "FTP Port" "${FtpServer}:21" ($(if ($ftpOk) { "OK" } else { "FAIL" })) "TCP"
 
 $results | Format-Table -AutoSize
 
