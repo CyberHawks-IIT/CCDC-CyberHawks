@@ -39,7 +39,7 @@ fi
 
 echo "Enabling auditd..."
 sudo systemctl enable auditd
-sudo systemctl restart auditd
+# sudo systemctl restart auditd - idk why its tweaking
 
 echo "Verifying..."
 sudo auditctl -s
