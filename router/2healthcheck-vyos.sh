@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# NOTE: This is for version VyOS 1.4
+# Created 2026-03-14 - Lucas Ferguson
+
 OUT_DIR="./healthcheck"
 TS="$(date +%Y%m%d-%H%M%S)"
 OUT="$OUT_DIR/$TS"
