@@ -10,3 +10,7 @@ sudo ./ftrace_cooker.sh
 # Cook kprobe
 echo ""
 sudo ./kprobe_cooker.sh
+
+# Cook ebpf
+echo ""
+sudo ./ebpf_cooker.sh
