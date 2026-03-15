@@ -2,6 +2,20 @@
 # >:) full version lets you kill directly
 # Took this list from Cedarville's repo, shout out them!
 
+echo "
+              !___!               ^___^
+           |(   ⭑⏘⭑)  {{  {{{   ( - < -)|
+           | |____|-oc[_]_\̅_̅/̷̚ʾo-|   o- \|
+           [______]      _||_    [______]
+
+           \"I could be killing services
+            AND drinking coffee right now...\"
+           service killer - cc00ffee
+
+=====================================================
+
+"
+
 SERVICE_FILE="systemctl-safe-services.txt"
 
 BAD_SERVICES=(
