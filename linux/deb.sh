@@ -1,6 +1,10 @@
 #!/bin/bash
 echo "Finding elfs..."
-sudo find / -type f -perm /a+x 2>/dev/null | while read -r file; do if $(file "$file" | cut -d' ' -f2- | grep -Eq 'ELF '); then echo "$file"; fi done > elfs
+sudo find / -type f -perm /a+x 2>/dev/null | while read -r file; do 
+    if $(file "$file" | cut -d' ' -f2- | grep -Eq 'ELF '); then
+        echo "$file" 
+    fi
+done > elfs
 # sudo find / -path "/mnt" -prune -o -type f -perm /a+x 2>/dev/null | while read -r file; do if $(file "$file" | cut -d' ' -f2- | grep -Eq 'ELF '); then echo "$file"; fi done > elfs
 echo "Finding tracked..."
 sudo cat /var/lib/dpkg/info/*.md5sums | cut -d' ' -f2- | sort | uniq | while read -r line; do echo "/$line"; done > trk

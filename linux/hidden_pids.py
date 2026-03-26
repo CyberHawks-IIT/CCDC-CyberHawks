@@ -23,7 +23,11 @@ for file in proc_files:
 pids.sort()
 
 def get_exe(pid):
-    return cmd(f"sudo ls -l /proc/{pid}/exe").splitlines()[0].split(" -> ")[1]
+    out = cmd(f"sudo ls -l /proc/{pid}/exe").strip().splitlines()
+    if out:
+        return out[0].split(" -> ")[1]
+    else:
+        return None
 
 for brutepid in range(pids[0],pids[-1]):
     if brutepid not in pids:

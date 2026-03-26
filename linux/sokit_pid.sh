@@ -8,12 +8,13 @@ function echol(){
 
 annotate_pid() {
     while IFS= read -r line; do
-        pid=$(echo "$line" | grep -oP '/proc/\K\d+')
+	    pid=$(echo "$line" | grep -oP '^/proc/\K\d+')
+	    echo ""
         if [[ -n "$pid" ]]; then
             comm=$(cat /proc/$pid/comm 2>/dev/null || echo "unknown")
-            echo "[$pid:$comm] $line"
+            echo "[$pid:$comm] $line" | rg "LD_PRELOAD=|LD_LIBRARY_PATH=|LD_AUDIT="
         else
-            echo "$line"
+            echo "$line" | rg "LD_PRELOAD=|LD_LIBRARY_PATH=|LD_AUDIT="
         fi
     done
 }
@@ -30,7 +31,7 @@ echo "Current shell env var values -- LD_PRELOAD: $LD_PRELOAD, LD_LIBRARY_PATH: 
 
 # Search for bad env vars in all processes
 echol "Search for LD_PRELOAD|LD_LIBRARY_PATH|LD_AUDIT in all processes:"
-sudo rg --pre strings --text "LD_PRELOAD=|LD_LIBRARY_PATH=|LD_AUDIT=" /proc/*/environ 2>/dev/null | annotate_pid
+sudo rg --pre strings --text "LD_PRELOAD=|LD_LIBRARY_PATH=|LD_AUDIT=" /proc/*/environ 2>/dev/null | annotate_pid 
 
 # Search for .so's being used that aren't in the standard directories
 echol "Shared objects being used in memory that aren't in the standard directories (/lib,/usr/lib,/lib64,/usr/lib64):"
